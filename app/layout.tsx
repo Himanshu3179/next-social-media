@@ -30,12 +30,14 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <main className="relative min-h-screen w-full flex justify-center items-center">
+        <main className="relative h-screen w-full flex justify-center items-center">
           <Navbar />
-          {children}
+          <div className="flex flex-col w-full h-full pt-14 items-center justify-center">
+            {children}
+          </div>
         </main>
         <Toaster />
-      </body>
+      </body>{/*  */}
     </html>
   );
 }
