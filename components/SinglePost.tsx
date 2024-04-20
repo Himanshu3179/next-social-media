@@ -11,6 +11,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Image from 'next/image'
+import { Repeat2 } from 'lucide-react'
+import { formatTimeAgo } from '@/lib/timeago'
 interface Post {
     id: string;
     authorId: string;
@@ -40,11 +42,16 @@ const SinglePost = (
             </CardHeader>
             <CardContent>
                 <Image src={post.imageUri} alt="Post image" width={300} height={400} className='rounded-sm' />
+                <p className='text-muted-foreground text-right mt-2'>{formatTimeAgo(post.createdAt)}</p>
             </CardContent>
             <CardFooter>
-                <Button onClick={
+                <button onClick={
                     () => handleRePost(post.id)
-                }>Re Post</Button>
+                }
+                    className='text-muted-foreground hover:text-green-600 transition duration-300 ease-in-out flex gap-1 text-sm'
+                >
+                    <Repeat2 size={20} />Repost
+                </button>
             </CardFooter>
         </Card>
     )

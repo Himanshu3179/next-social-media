@@ -63,7 +63,9 @@ const ContactForm = () => {
     };
 
     return (
-        <Form {...form}>
+
+        <Form {...form} >
+            <h1 className='text-3xl font-bold mb-5 text-center'>Contact Us</h1>
             <form onSubmit={form.handleSubmit(onSubmit)} className='w-full'>
                 <div className='space-y-2'>
                     <FormField
@@ -103,6 +105,7 @@ const ContactForm = () => {
                 </Button>
             </form>
         </Form>
+
     );
 };
 

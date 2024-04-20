@@ -41,7 +41,12 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
+    if (!file.type.startsWith("image/")) {
+      return NextResponse.json(
+        { message: "Invalid file type. Only images are supported." },
+        { status: 400 }
+      );
+    }
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const fileName = await uploadFileToS3(buffer);

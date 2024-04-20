@@ -25,7 +25,7 @@ const AllUsers = async () => {
 
     return (
 
-        <div className='border p-5 w-full'>
+        <div className='border p-5 w-full h-full'>
             <h1 className='text-2xl font-bold'>All Users</h1>
             <div className='flex flex-col mt-5'>
                 {users.map((user: any) => (

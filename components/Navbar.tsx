@@ -10,10 +10,9 @@ import { Badge } from '@/components/ui/badge'
 export const Navbar = async () => {
     const navLinks = [
         { name: 'Home', href: '/' },
-        { name: 'About', href: '/about' },
+        { name: 'Create Post', href: '/upload' },
         { name: 'Contact Us', href: '/contact' },
         { name: 'Profile', href: '/user' },
-        { name: 'Upload', href: '/upload' }
     ]
     const session = await getServerSession(authOptions);
     return (
@@ -29,7 +28,7 @@ export const Navbar = async () => {
                 </Link>
 
             </div>
-            <div className='flex gap-5 justify-center grow m-auto'>
+            <div className='hidden md:flex gap-5 justify-center grow m-auto '>
                 {
                     navLinks.map((link) => (
                         <Link href={link.href} key={link.name} className='hover:text-blue-500'>
@@ -38,6 +37,8 @@ export const Navbar = async () => {
                     ))
                 }
             </div>
+
+
             <div className='flex justify-end items-center gap-3'>
                 {
                     session ? (

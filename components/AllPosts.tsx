@@ -70,11 +70,11 @@ const AllPosts = () => {
 
     return (
         <div className='w-full h-full p-5 '>
-            <h1 className='text-2xl font-bold'>All Posts</h1>
-            <div className='flex flex-col mt-5 gap-3'>
+            <div className='flex flex-col mt-5 gap-3 items-center pb-64'>
                 {posts.map((post, index) => (
                     <SinglePost key={index} post={post} handleRePost={handleRePost} />
                 ))}
+                <Button onClick={LoadMore} variant='default'>Load More</Button>
             </div>
         </div>
     )

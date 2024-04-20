@@ -13,7 +13,6 @@ export const GET = async (req: Request, context: any) => {
     return NextResponse.json([]);
   }
 
-  console.log("take", take);
   const posts = await db.post.findMany({
     take: take ? parseInt(take) : 10,
     skip: skip ? parseInt(skip) : 0,
@@ -30,6 +29,5 @@ export const GET = async (req: Request, context: any) => {
     },
   });
       
-  console.log(posts.length);
   return NextResponse.json(posts);
 };

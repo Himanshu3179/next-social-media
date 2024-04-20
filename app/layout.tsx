@@ -5,6 +5,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
+import BottomBar from "@/components/BottomBar";
 
 const inter = Inter({ subsets: ["latin"] });
 export const fontSans = FontSans({
@@ -35,6 +36,7 @@ export default function RootLayout({
           <div className="flex flex-col w-full h-full pt-14 items-center justify-center">
             {children}
           </div>
+          <BottomBar />
         </main>
         <Toaster />
       </body>{/*  */}

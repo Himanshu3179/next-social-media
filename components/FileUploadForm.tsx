@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useToast } from '@/components/ui/use-toast';
 
 const FileUploadForm = () => {
     const [file, setFile] = useState<File | null>(null);
@@ -9,6 +10,7 @@ const FileUploadForm = () => {
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const router = useRouter();
 
+    const { toast } = useToast()
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -31,10 +33,21 @@ const FileUploadForm = () => {
                 body: formData
             });
             const data = await response.json();
-            console.log(data);
+            if (!response.ok) {
+                toast({
+                    title: "Error",
+                    description: data.message,
+                    variant: 'destructive'
+                })
+            }
+
             router.refresh();
         } catch (error) {
-            console.error(error);
+            console.error("error:", error);
+            toast({
+                title: "Error",
+                description: "Error uploading file",
+            })
         } finally {
             setUploading(false);
             setPreviewUrl(null);
