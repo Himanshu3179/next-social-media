@@ -40,6 +40,6 @@ export default function RootLayout({
         </main>
         <Toaster />
       </body>{/*  */}
-    </html>
+    </html >
   );
 }
