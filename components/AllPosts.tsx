@@ -19,7 +19,7 @@ interface Post {
     };
     id: string;
     imageUri: string | null;
-    createdAt: string;
+    createdAt: Date;
     likes: {
         id: string;
         userId: string;
@@ -55,25 +55,6 @@ const AllPosts = (
         fetchPosts();
     }, [take, skip]);
 
-    // const handleRePost = async (postId: string) => {
-    //     try {
-    //         const response = await fetch(`/api/posts/${postId}/repost`, {
-    //             method: 'POST',
-    //         });
-    //         const newPost = await response.json();
-    //         console.log(newPost);
-    //         setPosts(prevPosts => [newPost, ...prevPosts]);
-    //         window.scrollTo(0, 0);
-    //         toast({
-    //             title: "Success",
-    //             description: "Post Reposted",
-    //             variant: 'default'
-    //         })
-
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
 
 
 
