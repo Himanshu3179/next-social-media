@@ -5,7 +5,7 @@ export async function GET(req: NextRequest) {
     const users = await db.user.findMany({
       select: {
         id: true,
-        name: true,
+        username: true,
         email: true,
       },
     });

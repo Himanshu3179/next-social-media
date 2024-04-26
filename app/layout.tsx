@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
 import BottomBar from "@/components/BottomBar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const inter = Inter({ subsets: ["latin"] });
 export const fontSans = FontSans({
@@ -33,13 +34,15 @@ export default function RootLayout({
       >
         <main className="relative h-screen w-full flex justify-center items-center">
           <Navbar />
-          <div className="flex flex-col w-full h-full pt-14 items-center justify-center">
-            {children}
-          </div>
+          <ScrollArea className="h-full w-full rounded-md border pb-16 lg:pb-0">
+            <div className="flex flex-col w-full h-full pt-16 items-center">
+              {children}
+            </div>
+          </ScrollArea>
           <BottomBar />
         </main>
         <Toaster />
-      </body>{/*  */}
+      </body>
     </html >
   );
 }

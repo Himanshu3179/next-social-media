@@ -9,7 +9,6 @@ import Link from "next/link"
 const Home = async () => {
   const session = await getServerSession(authOptions)
 
-
   if (!session) return (
     <div className="flex flex-col justify-center items-center gap-5">
       <p className="font-bold">Not logged in</p>
@@ -21,7 +20,7 @@ const Home = async () => {
 
   return (
     <>
-      <AllPosts />
+      <AllPosts userId={session.user.id} />
     </>
   )
 }

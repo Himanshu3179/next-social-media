@@ -8,20 +8,95 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Post      Post[]
+  id                     String          @id @default(cuid())
+  username               String          @unique
+  email                  String          @unique
+  password               String
+  profilePhoto           String?         @db.VarChar(255)
+  createdAt              DateTime        @default(now())
+  updatedAt              DateTime        @updatedAt
+  posts                  Post[]
+  comments               Comment[]
+  likes                  Like[]
+  sentFriendRequests     FriendRequest[] @relation("SentFriendRequests")
+  receivedFriendRequests FriendRequest[] @relation("ReceivedFriendRequests")
+  friends                Friend[]        @relation("Me")
+  friendOf               Friend[]        @relation("FriendOf")
 }
 
 model Post {
-  id        String   @id @default(uuid())
-  imageUri  String   @db.VarChar(255)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String
+  id         String     @id @default(cuid())
+  userId     String
+  user       User       @relation(fields: [userId], references: [id])
+  title      String
+  content    String?
+  imageUri   String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  visibility VISIBILITY @default(PUBLIC)
+  deletedAt  DateTime?  @db.Timestamp
+  comments   Comment[]
+  likes      Like[]
+}
+
+model Comment {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  postId    String
+  post      Post      @relation(fields: [postId], references: [id])
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? @db.Timestamp
+  likes     Like[]
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  commentId String?
+  comment   Comment? @relation(fields: [commentId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model FriendRequest {
+  id         String   @id @default(cuid())
+  senderId   String
+  sender     User     @relation("SentFriendRequests", fields: [senderId], references: [id])
+  receiverId String
+  receiver   User     @relation("ReceivedFriendRequests", fields: [receiverId], references: [id])
+  status     Status   @default(PENDING)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([senderId, receiverId])
+}
+
+model Friend {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation("Me", fields: [userId], references: [id])
+  friendId  String
+  friend    User     @relation("FriendOf", fields: [friendId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, friendId])
+}
+
+enum VISIBILITY {
+  PUBLIC
+  PRIVATE
+  FRIENDS_ONLY
+}
+
+enum Status {
+  PENDING 
+  ACCEPTED
+  REJECTED
 }

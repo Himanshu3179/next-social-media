@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast';
 const FormSchema = z
     .object({
-        name: z.string().min(1, 'name is required').max(100),
+        username: z.string().min(1, 'username is required').max(20, 'username is too long'),
         email: z.string().min(1, 'Email is required').email('Invalid email'),
         password: z
             .string()
@@ -38,7 +38,7 @@ const SignUpForm = () => {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            name: '',
+            username: '',
             email: '',
             password: '',
             confirmPassword: '',
@@ -73,10 +73,10 @@ const SignUpForm = () => {
                 <div className='space-y-2'>
                     <FormField
                         control={form.control}
-                        name='name'
+                        name='username'
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Name</FormLabel>
+                                <FormLabel>Username</FormLabel>
                                 <FormControl>
                                     <Input placeholder='johndoe' {...field} />
                                 </FormControl>

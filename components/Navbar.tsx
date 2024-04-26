@@ -13,7 +13,7 @@ export const Navbar = async () => {
     const navLinks = [
         { name: 'Home', href: '/', icon: <Home /> },
         { name: 'All Users', href: '/allusers', icon: <Users /> },
-        { name: 'Create Post', href: '/upload', icon: <PlusCircle /> },
+        { name: 'Create Post', href: '/createpost', icon: <PlusCircle /> },
         { name: 'Contact Us', href: '/contact', icon: <Headset /> },
         { name: 'Profile', href: '/user', icon: <User /> },
     ]
@@ -24,6 +24,7 @@ export const Navbar = async () => {
             flex gap-5
             justify-between
             fixed top-0 left-0
+            z-50
         '>
             <div className='flex justify-start cursor-pointer shrink-0'>
                 <Link href='/' >
@@ -31,7 +32,7 @@ export const Navbar = async () => {
                 </Link>
 
             </div>
-            <div className='hidden md:flex gap-10 justify-center grow m-auto '>
+            <div className='hidden lg:flex gap-10 justify-center grow m-auto '>
                 {
                     navLinks.map((link) => (
                         <Link href={link.href} key={link.name} className='hover:text-blue-500
@@ -49,7 +50,7 @@ export const Navbar = async () => {
                 {
                     session ? (
                         <>
-                            <Badge >{session.user.name}</Badge>
+                            <Badge >{session.user.username}</Badge>
                             <SignOutButton />
                         </>
                     ) : (

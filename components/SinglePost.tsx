@@ -1,60 +1,71 @@
-import React from 'react'
-import { Button } from "@/components/ui/button"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import Image from 'next/image'
-import { Repeat2 } from 'lucide-react'
 import { formatTimeAgo } from '@/lib/timeago'
+import { VISIBILITY } from '@prisma/client'
+import PostInterationButtons from './PostInterationButtons'
+import { authOptions } from '@/lib/auth';
+import { getServerSession } from 'next-auth';
+import Link from 'next/link';
+import { BsThreeDots } from "react-icons/bs";
+
 interface Post {
+    title: string;
+    content: string | null;
+    visibility: VISIBILITY;
+    user: {
+        id: string;
+        username: string;
+        profilePhoto: string | null;
+    };
     id: string;
-    authorId: string;
-    createdAt: string;
-    updatedAt: string;
-    imageUri: string;
-    author: {
-        email: string;
-        name: string;
-    }
+    imageUri: string | null;
+    createdAt: Date;
+    likes: {
+        id: string;
+        userId: string;
+    }[];
 }
 
 const SinglePost = (
-    { post, handleRePost }: { post: Post, handleRePost: (postId: string) => void }
+    { post, userId }: { post: Post, userId: string | undefined }
 ) => {
     return (
-        <Card className="w-[350px]
-        
-        ">
-            <CardHeader>
-                <CardTitle>
-                    {post.author.name}
-                </CardTitle>
-                <CardDescription>
-                    {post.author.email}
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <Image src={post.imageUri} alt="Post image" width={300} height={400} className='rounded-sm' />
-                <p className='text-muted-foreground text-right mt-2'>{formatTimeAgo(post.createdAt)}</p>
-            </CardContent>
-            <CardFooter>
-                <button onClick={
-                    () => handleRePost(post.id)
-                }
-                    className='text-muted-foreground hover:text-green-600 transition duration-300 ease-in-out flex gap-1 text-sm'
-                >
-                    <Repeat2 size={20} />Repost
-                </button>
-            </CardFooter>
-        </Card>
+        <div className='border flex flex-col gap-3 w-fit rounded-lg '>
+            <div className='flex flex-col gap-3 p-5 bg-neutral-900'>
+                <div className='flex items-center gap-3 '>
+                    <Link href={`/user/${post.user.id}`}>
+                        <Image src={post.user.profilePhoto || '/default-profile.jpg'} alt={post.user.username}
+                            width={50}
+                            height={50}
+                            className='rounded-full'
+                        />
+                    </Link>
+                    <div>
+                        <Link href={`/user/${post.user.id}`}>
+                            <h1 className='text-lg font-bold'>{post.user.username}</h1>
+                        </Link>
+                        <p className='text-muted-foreground text-sm'>{formatTimeAgo(post.createdAt)}</p>
+                    </div>
+                    <Link href={`/post/${post.id}`} className='ml-auto'>
+                        <BsThreeDots size={22} />
+                    </Link>
+                </div>
+                <div className='flex flex-col '>
+                    <h1 className='text-xl font-bold'>{post.title}</h1>
+                    <p className='text-muted-foreground'>{post.content}</p>
+                </div>
+                {post.imageUri && (
+                    <Image src={post.imageUri} alt={post.title}
+                        className='rounded-lg'
+                        width={400}
+                        height={200}
+                    />
+                )}
+                <PostInterationButtons post={post}
+                    userId={userId}
+                />
+            </div>
+        </div>
     )
 }
 
-export default SinglePost
+export default SinglePost   

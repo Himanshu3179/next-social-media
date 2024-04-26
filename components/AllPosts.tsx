@@ -5,20 +5,31 @@ import React, { useState, useEffect } from 'react'
 import { Button } from './ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import SinglePost from './SinglePost';
+import { VISIBILITY } from '@prisma/client';
+import PostInterationButtons from './PostInterationButtons';
 
 interface Post {
+    title: string;
+    content: string | null;
+    visibility: VISIBILITY;
+    user: {
+        id: string;
+        username: string;
+        profilePhoto: string | null;
+    };
     id: string;
-    authorId: string;
+    imageUri: string | null;
     createdAt: string;
-    updatedAt: string;
-    imageUri: string;
-    author: {
-        email: string;
-        name: string;
-    }
+    likes: {
+        id: string;
+        userId: string;
+    }[];
 }
 
-const AllPosts = () => {
+
+const AllPosts = (
+    { userId }: { userId: string }
+) => {
     const [take, setTake] = useState(10);
     const [skip, setSkip] = useState(0);
     const [posts, setPosts] = useState<Post[]>([]);
@@ -44,25 +55,27 @@ const AllPosts = () => {
         fetchPosts();
     }, [take, skip]);
 
-    const handleRePost = async (postId: string) => {
-        try {
-            const response = await fetch(`/api/posts/${postId}/repost`, {
-                method: 'POST',
-            });
-            const newPost = await response.json();
-            console.log(newPost);
-            setPosts(prevPosts => [newPost, ...prevPosts]);
-            window.scrollTo(0, 0);
-            toast({
-                title: "Success",
-                description: "Post Reposted",
-                variant: 'default'
-            })
+    // const handleRePost = async (postId: string) => {
+    //     try {
+    //         const response = await fetch(`/api/posts/${postId}/repost`, {
+    //             method: 'POST',
+    //         });
+    //         const newPost = await response.json();
+    //         console.log(newPost);
+    //         setPosts(prevPosts => [newPost, ...prevPosts]);
+    //         window.scrollTo(0, 0);
+    //         toast({
+    //             title: "Success",
+    //             description: "Post Reposted",
+    //             variant: 'default'
+    //         })
 
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
+
+
 
     const LoadMore = () => {
         setSkip(skip + take);
@@ -70,9 +83,11 @@ const AllPosts = () => {
 
     return (
         <div className='w-full h-full p-5 '>
-            <div className='flex flex-col mt-5 gap-3 items-center pb-64'>
+            <div className='flex flex-col mt-5 gap-3 items-center w-full'>
                 {posts.map((post, index) => (
-                    <SinglePost key={index} post={post} handleRePost={handleRePost} />
+                    <>
+                        <SinglePost key={index} post={post} userId={userId} />
+                    </>
                 ))}
                 <Button onClick={LoadMore} variant='default'>Load More</Button>
             </div>

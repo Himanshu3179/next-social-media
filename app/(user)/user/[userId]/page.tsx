@@ -5,46 +5,59 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button, buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
 import { formatTimeAgo } from '@/lib/timeago';
+import { authOptions } from '@/lib/auth';
+import { getServerSession } from 'next-auth';
 const page = async (
     { params }: { params: { userId: string } }
 ) => {
 
     const fetUserDetails = async () => {
         try {
-            const users = await db.user.findUnique({
+            const data = await db.user.findUnique({
                 where: { id: params.userId },
                 select: {
                     id: true,
-                    name: true,
-                    email: true,
+                    username: true,
                     createdAt: true,
-                    Post: {
-                        orderBy: { createdAt: 'desc' }
-                    },
+                    posts: {
+                        select: {
+                            id: true,
+                            title: true,
+                            content: true,
+                            imageUri: true,
+                            createdAt: true,
+                        }
+                    }
                 },
             });
-            return users;
+            return data;
         } catch (error) {
             console.log(error);
             return null
         }
     }
 
-    const user = await fetUserDetails();
+    const data = await fetUserDetails();
     // console.log(user);
-    if (!user) return (
+    if (!data) return (
         <div>User not found</div>
     )
+    const session = await getServerSession(authOptions);
+    const idOfUser = session?.user.id;
     return (
         <div className='h-full w-full px-10 '>
             <div className='flex flex-col gap-1 my-5'>
-                <h1 className='text-3xl font-bold'>{user.name}</h1>
-                <p className='text-muted-foreground'>{user.email}</p>
+                <h1 className='text-2xl font-bold'>{data.username}</h1>
+                {/* post count */}
+                <p className='text-muted-foreground'>{data.posts.length} posts</p>
             </div>
-            <Link
-                className={`${buttonVariants({ variant: 'default' })} mb-5`}
-                href={`/upload`}
-            > Upload</Link>
+
+            {idOfUser === data.id && (
+                <Link
+                    className={`${buttonVariants({ variant: 'default' })} mb-5`}
+                    href={`/createpost`}
+                > Upload</Link>
+            )}
             <div className='
                     grid-cols-2
                     sm:grid-cols-2
@@ -53,20 +66,40 @@ const page = async (
                     grid gap-5
                     pb-40
                 '>
-                {user.Post.map((post: any) => (
-                    <div key={post.id} className='border flex flex-col justify-center items-center gap-3'>
-                        <Image src={post.imageUri} alt={post.id}
-                            width={200}
-                            height={200}
-                            priority
-                            className='rounded-lg'
-                        />
-                        {/* use time ago */}
-                        <div className='flex gap-2 text-muted-foreground '>
-                            <p>{formatTimeAgo(post.createdAt)}</p>
+                {data.posts.map(post => (
+                    <Link href={`/post/${post.id}`} key={post.id}>
+                        <div
+                            className='
+                            relative
+                            flex
+                            flex-col
+                            gap-2
+                            border
+                            rounded-md
+                            p-2
+                            h-full
+                        '
+                        >
+                            <div className='flex flex-col gap-1'>
+                                <h2 className='text-lg font-bold'>{post.title}</h2>
+                                <p className='text-muted-foreground'>{formatTimeAgo(post.createdAt)}</p>
+                            </div>
+                            <Image
+                                src={post.imageUri || '/default-image.jpg'}
+                                alt='Post Image'
+                                width={300}
+                                height={300}
+                                objectFit='cover'
+                                className='rounded-md '
+                            />
+
                         </div>
-                    </div>
+                    </Link>
                 ))}
+                {/* if no posts */}
+                {data.posts.length === 0 && (
+                    <div className='text-muted-foreground text-center'>No posts</div>
+                )}
             </div>
         </div>
     )

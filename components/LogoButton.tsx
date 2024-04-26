@@ -21,7 +21,7 @@ const LogoButton = () => {
 
     return (
         <div style={textStyle} className='text-xl font-bold'>
-            Color Changing Text
+            Social Media
         </div>
     );
 };

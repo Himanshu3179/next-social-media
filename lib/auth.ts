@@ -33,22 +33,30 @@ export const authOptions: NextAuthOptions = {
           user.password
         );
         if (!isValid) return null;
-
-        return { id: user.id, name: user.name, email: user.email };
+        return {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+        };
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        return { ...token, name: user.name, id: user.id };
+        return { ...token, username: user.username, id: user.id };
       }
       return token;
     },
     async session({ session, token }) {
       return {
         ...session,
-        user: { ...session.user, name: token.name, id: token.sub },
+        user: {
+          ...session.user,
+          name: token.name,
+          id: token.sub,
+          username: token.username,
+        },
       };
     },
   },

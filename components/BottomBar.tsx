@@ -7,12 +7,12 @@ const BottomBar = () => {
     const navLinks = [
         { name: 'Home', href: '/', icon: <Home /> },
         { name: 'All Users', href: '/allusers', icon: <Users /> },
-        { name: 'Create Post', href: '/upload', icon: <PlusCircle /> },
+        { name: 'Create Post', href: '/createpost', icon: <PlusCircle /> },
         { name: 'Contact Us', href: '/contact', icon: <Headset /> },
         { name: 'Profile', href: '/user', icon: <User /> },
     ]
     return (
-        <div className='md:hidden fixed bottom-3 w-fit bg-neutral-950
+        <div className='lg:hidden fixed bottom-1 w-fit bg-neutral-950
             p-4 border-2 rounded-full px-10
         '>
             <div className='flex justify-center gap-10 items-center'>
