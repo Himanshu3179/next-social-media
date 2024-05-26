@@ -29,8 +29,10 @@ const SinglePost = (
     { post, userId }: { post: Post, userId: string | undefined }
 ) => {
     return (
-        <div className='border flex flex-col gap-3 w-fit rounded-lg '>
-            <div className='flex flex-col gap-3 p-5 bg-neutral-900'>
+        <div className=' flex flex-col gap-3 max-w-[400px] rounded-lg backdrop-blur-lg
+            bg-neutral-50/10
+        '>
+            <div className='flex flex-col gap-3 p-5 '>
                 <div className='flex items-center gap-3 '>
                     <Link href={`/user/${post.user.id}`}>
                         <Image src={post.user.profilePhoto || '/default-profile.jpg'} alt={post.user.username}

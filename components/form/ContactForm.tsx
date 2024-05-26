@@ -13,7 +13,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+
 import { redirect, useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { Textarea } from '../ui/textarea';
@@ -63,7 +63,6 @@ const ContactForm = () => {
     };
 
     return (
-
         <Form {...form} >
             <h1 className='text-3xl font-bold mb-5 text-center'>Contact Us</h1>
             <form onSubmit={form.handleSubmit(onSubmit)} className='w-full'>
@@ -75,7 +74,9 @@ const ContactForm = () => {
                             <FormItem>
                                 <FormLabel>Subject</FormLabel>
                                 <FormControl>
-                                    <Input placeholder='Title' {...field} />
+                                    <Input placeholder='Title' {...field}
+                                        className='bg-transparent/10'
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -91,6 +92,7 @@ const ContactForm = () => {
                                     <Textarea
                                         placeholder='Message'
                                         {...field}
+                                        className='bg-transparent/10'
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -101,7 +103,11 @@ const ContactForm = () => {
                 <Button className='w-full mt-6' type='submit'
                     disabled={form.formState.isSubmitting}
                 >
-                    Send
+                    {
+                        form.formState.isSubmitting
+                            ? 'Submitting...'
+                            : 'Submit'
+                    }
                 </Button>
             </form>
         </Form>

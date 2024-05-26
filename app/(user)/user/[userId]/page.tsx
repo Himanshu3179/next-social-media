@@ -45,16 +45,34 @@ const page = async (
     const session = await getServerSession(authOptions);
     const idOfUser = session?.user.id;
     return (
-        <div className='h-full w-full px-10 '>
-            <div className='flex flex-col gap-1 my-5'>
-                <h1 className='text-2xl font-bold'>{data.username}</h1>
-                {/* post count */}
-                <p className='text-muted-foreground'>{data.posts.length} posts</p>
+        <div className='h-full w-full px-10 flex flex-col'>
+            <div className='flex gap-5 my-5 mx-auto 
+                bg-neutral-50/10 p-10
+                items-center justify-center
+                rounded-lg
+            '>
+                <div className='
+                    p-1 bg-gradient-to-tr from-blue-500 to-pink-500 rounded-full
+                '>
+                    <div className='rounded-full p-1 bg-black/20'>
+                        <Image
+                            src='/default-profile.jpg'
+                            alt='Profile Photo'
+                            width={100}
+                            height={100}
+                            className='rounded-full'
+                        />
+                    </div>
+                </div>
+                <div className='flex flex-col'>
+                    <h1 className='text-2xl font-bold'>{data.username}</h1>
+                    <p className='text-muted-foreground'>{data.posts.length} posts</p>
+                </div>
             </div>
 
             {idOfUser === data.id && (
                 <Link
-                    className={`${buttonVariants({ variant: 'default' })} mb-5`}
+                    className={`${buttonVariants({ variant: 'default' })} mb-5 w-fit mx-auto`}
                     href={`/createpost`}
                 > Upload</Link>
             )}
@@ -74,13 +92,14 @@ const page = async (
                             flex
                             flex-col
                             gap-2
-                            border
+                            
                             rounded-md
                             p-2
                             h-full
+                            bg-neutral-50/10
                         '
                         >
-                            <div className='flex flex-col gap-1'>
+                            <div className='flex flex-col gap-1 p-3'>
                                 <h2 className='text-lg font-bold'>{post.title}</h2>
                                 <p className='text-muted-foreground'>{formatTimeAgo(post.createdAt)}</p>
                             </div>

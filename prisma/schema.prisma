@@ -3,16 +3,16 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id                     String          @id @default(cuid())
+  id                     String          @id @default(auto()) @map("_id") @db.ObjectId
   username               String          @unique
   email                  String          @unique
   password               String
-  profilePhoto           String?         @db.VarChar(255)
+  profilePhoto           String?         @db.String
   createdAt              DateTime        @default(now())
   updatedAt              DateTime        @updatedAt
   posts                  Post[]
@@ -25,8 +25,8 @@ model User {
 }
 
 model Post {
-  id         String     @id @default(cuid())
-  userId     String
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String     @db.ObjectId
   user       User       @relation(fields: [userId], references: [id])
   title      String
   content    String?
@@ -40,10 +40,10 @@ model Post {
 }
 
 model Comment {
-  id        String    @id @default(cuid())
-  userId    String
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String    @db.ObjectId
   user      User      @relation(fields: [userId], references: [id])
-  postId    String
+  postId    String    @db.ObjectId
   post      Post      @relation(fields: [postId], references: [id])
   content   String
   createdAt DateTime  @default(now())
@@ -53,22 +53,22 @@ model Comment {
 }
 
 model Like {
-  id        String   @id @default(cuid())
-  userId    String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
   user      User     @relation(fields: [userId], references: [id])
-  postId    String
+  postId    String   @db.ObjectId
   post      Post     @relation(fields: [postId], references: [id])
-  commentId String?
+  commentId String?  @db.ObjectId
   comment   Comment? @relation(fields: [commentId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model FriendRequest {
-  id         String   @id @default(cuid())
-  senderId   String
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  senderId   String   @db.ObjectId
   sender     User     @relation("SentFriendRequests", fields: [senderId], references: [id])
-  receiverId String
+  receiverId String   @db.ObjectId
   receiver   User     @relation("ReceivedFriendRequests", fields: [receiverId], references: [id])
   status     Status   @default(PENDING)
   createdAt  DateTime @default(now())
@@ -78,10 +78,10 @@ model FriendRequest {
 }
 
 model Friend {
-  id        String   @id @default(cuid())
-  userId    String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
   user      User     @relation("Me", fields: [userId], references: [id])
-  friendId  String
+  friendId  String   @db.ObjectId
   friend    User     @relation("FriendOf", fields: [friendId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -96,7 +96,7 @@ enum VISIBILITY {
 }
 
 enum Status {
-  PENDING 
+  PENDING
   ACCEPTED
   REJECTED
 }

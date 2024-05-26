@@ -37,6 +37,9 @@ const PostInterationButtons = (
     const router = useRouter();
 
     const handleLike = async () => {
+        // Optimistically update the UI
+        setIsLiked(prevIsLiked => !prevIsLiked);
+        setLikesCount(prevLikesCount => isLiked ? prevLikesCount - 1 : prevLikesCount + 1);
         try {
             const response = await fetch(`/api/posts/${post.id}/like`, {
                 method: 'POST',
@@ -44,26 +47,22 @@ const PostInterationButtons = (
             const newPost = await response.json();
             console.log(newPost);
             if (!response.ok) {
-                toast({
-                    title: "Error",
-                    description: newPost.message,
-                    variant: 'destructive'
-                })
-                return;
-            }
-            setIsLiked(prevIsLiked => !prevIsLiked);
-
-            if (isLiked) {
-                setLikesCount(prevLikesCount => prevLikesCount - 1);
-            } else {
-                setLikesCount(prevLikesCount => prevLikesCount + 1);
+                throw new Error(newPost.message);
             }
         } catch (error) {
             console.error(error);
-        }
-        finally {
+            // Rollback the UI changes
+            setIsLiked(prevIsLiked => !prevIsLiked);
+            setLikesCount(prevLikesCount => isLiked ? prevLikesCount + 1 : prevLikesCount - 1);
+            toast({
+                title: "Error",
+                description: "An error occurred while liking the post",
+                variant: 'destructive'
+            });
+        } finally {
             router.refresh();
         }
+
     }
 
     const copyPostUrl = async () => {
@@ -82,7 +81,7 @@ const PostInterationButtons = (
             <div className='mt-2 flex justify-between'>
                 <div className='flex gap-4 items-center'>
 
-                    <button onClick={handleLike} className='flex gap-1 items-center '>
+                    <button id="like-button" onClick={handleLike} className='flex gap-1 items-center transition-transform duration-150'>
                         {isLiked ? <IoMdHeart size={26} color='red' /> : <IoMdHeartEmpty size={26} />}
                         <span>{likesCount}</span>
                     </button>
@@ -100,9 +99,12 @@ const PostInterationButtons = (
                             onClick={() => setOpenComments(prevOpenComments => !prevOpenComments)}
                         />
                     ) : (
-                        <GoComment size={24}
-                            onClick={() => setOpenComments(prevOpenComments => !prevOpenComments)}
-                        />
+                        <>
+                            <GoComment size={24}
+                                onClick={() => setOpenComments(prevOpenComments => !prevOpenComments)}
+                            />
+                        
+                        </>
                     )}
                 </div>
 

@@ -36,12 +36,14 @@ const AllUsers = async () => {
 
     return (
 
-        <div className='border p-5 w-full h-full'>
-            <h1 className='text-2xl font-bold'>All Users</h1>
-            <div className='flex flex-col gap-3'>
+        <div className='p-5 w-full h-full flex flex-col items-center justify-center '>
+            <h1 className='text-2xl font-bold '>All Users</h1>
+            <div className='flex flex-col  gap-3 mt-20 max-w-md mx-auto w-full'>
                 {users.map(user => (
                     <Link key={user.id} href={`/user/${user.id}`}>
-                        <div className='flex items-center gap-3 p-3 border rounded-lg'>
+                        <div className='flex items-center gap-3 p-3  rounded-lg
+                            bg-neutral-50/10
+                        '>
                             <Image src={user.profilePhoto || '/default-profile.jpg'} alt={user.username} className='rounded-full' width={50} height={50} />
                             <div>
                                 <h1 className='text-lg font-bold'>{user.username}</h1>

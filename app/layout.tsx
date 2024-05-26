@@ -7,6 +7,7 @@ import { Navbar } from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
 import BottomBar from "@/components/BottomBar";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
 export const fontSans = FontSans({
@@ -33,6 +34,13 @@ export default function RootLayout({
         )}
       >
         <main className="relative h-screen w-full flex justify-center items-center">
+          <Image src="/back1.jpeg" layout="fill" objectFit="cover" alt=''
+            className="absolute z-0 top-0 left-0 w-full h-full object-cover filter blur-2xl
+            brightness-50 
+            
+            
+            "
+          />
           <Navbar />
           <ScrollArea className="h-full w-full rounded-md border pb-16 lg:pb-0">
             <div className="flex flex-col w-full h-full pt-16 items-center">

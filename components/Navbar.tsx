@@ -19,7 +19,12 @@ export const Navbar = async () => {
     ]
     const session = await getServerSession(authOptions);
     return (
-        <div className='w-full h-12 bg-neutral-800 items-center px-6
+        <div className='w-full h-12  items-center px-6
+            bg-neutral-50/10
+            backdrop-blur-2xl
+            
+            
+
              text-white
             flex gap-5
             justify-between

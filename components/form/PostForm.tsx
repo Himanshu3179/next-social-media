@@ -116,7 +116,10 @@ const PostForm = () => {
   };
 
   return (
-    <div className='border p-5 max-w-lg mx-auto mt-10'>
+    <div className=' p-5 max-w-lg mx-auto mt-10
+      bg-neutral-50/10
+      rounded-lg
+    '>
       <Form {...form} >
         <form className='w-full' onSubmit={form.handleSubmit(onSubmit)}>
           <div className='space-y-2'>
@@ -130,6 +133,7 @@ const PostForm = () => {
                     <Input
                       placeholder='Enter your title'
                       {...field}
+                      className='bg-transparent/10 '
                     />
                   </FormControl>
                   <FormMessage />
@@ -146,6 +150,7 @@ const PostForm = () => {
                     <Textarea
                       placeholder='Enter your content'
                       {...field}
+                      className='bg-transparent/10 '
                     />
                   </FormControl>
                   <FormMessage />
@@ -156,7 +161,9 @@ const PostForm = () => {
           <div>
             <input
               type="file"
-              className='border border-gray-800 rounded-md p-2 my-5 w-full'
+              className='border border-gray-800 rounded-md p-2 my-5 w-full
+                bg-transparent/10
+              '
               onChange={handleFileChange}
             />
           </div>
@@ -164,7 +171,7 @@ const PostForm = () => {
             {previewUrl && <Image src={previewUrl} alt="File preview" width={"300"} height={"100"} />}
           </div>
 
-          <div className='flex justify-evenly border p-1 bg-neutral-800 rounded-lg text-sm font-semibold'>
+          {/* <div className='flex justify-evenly border p-1 bg-neutral-800 rounded-lg text-sm font-semibold'>
             <button
               type='button'
               onClick={() => setTab(VISIBILITY.PUBLIC)}
@@ -180,7 +187,7 @@ const PostForm = () => {
               onClick={() => setTab(VISIBILITY.FRIENDS_ONLY)}
               className={`w-full p-1 rounded-md ${tab === VISIBILITY.FRIENDS_ONLY ? 'bg-neutral-700' : 'bg-neutral-800'}`}
             >FRIENDS ONLY</button>
-          </div>
+          </div> */}
 
           <Button
             className={`w-full mt-6 
