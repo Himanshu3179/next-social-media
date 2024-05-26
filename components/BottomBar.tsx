@@ -12,7 +12,8 @@ const BottomBar = () => {
         { name: 'Profile', href: '/user', icon: <User /> },
     ]
     return (
-        <div className='lg:hidden fixed bottom-1 w-fit bg-neutral-950
+        <div className='lg:hidden fixed bottom-1 w-fit  
+        bg-neutral-50/10
             p-4 border-2 rounded-full px-10
         '>
             <div className='flex justify-center gap-10 items-center'>

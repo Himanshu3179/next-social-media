@@ -1,38 +1,14 @@
-"use client"
-import React, { useEffect } from 'react';
+import React from 'react';
 
 const LogoButton = () => {
-    useEffect(() => {
-        const styleSheet = document.styleSheets[0];
-        const keyframes = `@keyframes gradientAnimation {
-      0%, 100% {
-        background-position: 100% 0;
-      }
-      50% {
-        background-position: 0 100%;
-      }
-    }`;
-        styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
-
-        return () => {
-            styleSheet.deleteRule(styleSheet.cssRules.length - 1);
-        };
-    }, []);
-
     return (
-        <div style={textStyle} className='text-xl font-bold'>
-            Social Media
+        <div className='text-xl font-bold relative overflow-hidden inline-block '>
+            <span className='absolute inset-0 bg-gradient-stroke transform scale-150 origin-center' aria-hidden='true'></span>
+            <span className='relative text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500'>
+                VibeSphere
+            </span>
         </div>
     );
-};
-
-const textStyle = {
-
-    background: 'linear-gradient(90deg,  #0000FF, #FF00FF)',
-    backgroundSize: '200% 100%',
-    color: 'transparent',
-    backgroundClip: 'text',
-    animation: 'gradientAnimation 5s ease infinite',
 };
 
 export default LogoButton;

@@ -22,14 +22,12 @@ export const Navbar = async () => {
         <div className='w-full h-12  items-center px-6
             bg-neutral-50/10
             backdrop-blur-2xl
-            
-            
-
-             text-white
+            text-white
             flex gap-5
             justify-between
             fixed top-0 left-0
             z-50
+            
         '>
             <div className='flex justify-start cursor-pointer shrink-0'>
                 <Link href='/' >
