@@ -47,7 +47,15 @@ const PostInterationButtons = (
             const newPost = await response.json();
             console.log(newPost);
             if (!response.ok) {
-                throw new Error(newPost.message);
+                toast({
+                    title: "Error",
+                    description: newPost.message,
+                    variant: 'destructive'
+                });
+
+                // Rollback the UI changes
+                setIsLiked(prevIsLiked => !prevIsLiked);
+                setLikesCount(prevLikesCount => isLiked ? prevLikesCount + 1 : prevLikesCount - 1);
             }
         } catch (error) {
             console.error(error);
@@ -103,7 +111,7 @@ const PostInterationButtons = (
                             <GoComment size={24}
                                 onClick={() => setOpenComments(prevOpenComments => !prevOpenComments)}
                             />
-                        
+
                         </>
                     )}
                 </div>

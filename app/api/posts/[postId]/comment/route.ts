@@ -6,7 +6,7 @@ export async function POST(req: NextRequest, context: any) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json(
-      { message: "You must be logged in to like a post." },
+      { message: "You must be logged in to Comment on a post." },
       { status: 401 }
     );
   }

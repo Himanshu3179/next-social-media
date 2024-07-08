@@ -96,7 +96,10 @@ const OpenComments = (
 
     return (
         <div className='w-full '>
-            <ScrollArea className="h-[400px] w-[400px] rounded-md border">
+            <ScrollArea className="
+                h-72    
+                bg-neutral-50/10    
+            rounded-md border">
                 {comments.map(comment => (
                     <div key={comment.id} className='flex items-center gap-3 p-3'>
                         <Image src={comment.user.profilePhoto || '/default-profile.jpg'} alt={comment.user.username}

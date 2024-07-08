@@ -31,7 +31,7 @@ interface Post {
 
 
 const AllPosts = (
-    { userId }: { userId: string }
+    { userId }: { userId: string | undefined }
 ) => {
     const [take, setTake] = useState(10);
     const [skip, setSkip] = useState(0);
